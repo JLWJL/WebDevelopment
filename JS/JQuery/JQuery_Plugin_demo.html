@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<title>JQuery_PlugIns_demo</title>
+
+	<style>
+		html{
+			font-size:19px;
+		}
+
+		code{
+			font-style: italic;
+			background-color: rgba(173, 176, 181, 0.4);
+		}
+
+		.steps li{
+			list-style-type:number;
+			
+		}
+	</style>
+</head>
+<body>
+	<h3>JQuery plugins generally takes steps as below</h3>
+	<ul class="steps" start="1">
+		<li>$.fn.plugin to add a function as plugin</li>
+		<li>Use <code>return this</code> or its variation at the end to be chainable</li>
+		<li>Accept <code>options</code> as parameters and use <code>.extend()</code> to set default value that</li>
+		<li>Provide a way for user to change the default value: <code>$.fn.plugin.default</code></li>
+		<li>Using <code>.each()</code> when neccessary. Note: <code>this</code> in <code>.each()</code> refers to the selected element, not <code>JQuery</code></li>
+	</ul>
+
+	<h3>Example 1: Customise colour for specific elements on page</h3>
+	
+	<label for="">Which element you want to change colour for?</label>
+	<select name="elements" id="elemSelect">
+		<option value="li">list</option>
+		<option value="h3">h3</option>
+		<option value="code">code</option>
+		<option value="*">all</option>
+	</select>
+	<br>
+	<label for="">What colour would you like?</label><input type="color"><br>
+	<label for="fontsize">Font size: <input type="text" name="fontsize"> px</label> <br>
+	<button>OK</button>
+	<button>Reset</button>
+
+	<script>
+		let btnOK =$('button:first');
+		let btnReset = $('button:last');
+		let selection = $('select');
+		let color = $('input[type=color]');
+		let fontSize = $('input[name=fontsize]');
+		let options = {};
+
+
+		btnOK.click(function(){
+			options.element = selection.val();//get selected element
+				//alert("selection: "+selection.val());
+			options.colour = color.val();//get selected colour
+				//alert("selection: "+color.val());
+			if(fontSize.val()!==""){
+				options.fontsize = fontSize.val()+"px";
+			}else{
+				options.fontsize =$.fn.changeColourFS.default.fontsize;
+			}
+			
+			
+			$(this).changeColourFS(options); //this function belongs to JQuery object, so use $()
+		});
+
+		btnReset.click(function(){
+			$(this).changeColourFS();
+		});
+
+		(function(){
+			$.fn.changeColourFS=function(opt){
+			var options = $.extend({}, $.fn.changeColourFS.default, opt);
+			//'return'! Otherwise cannot be chainable
+			 return $(options.element).css('color',options.colour).css('fontSize',options.fontsize);
+			}
+
+			$.fn.changeColourFS.default={
+				element: "*",
+				colour:"black",
+				fontsize:"19px"
+			}	
+		})();
+		
+	</script>
+</body>
+</html>

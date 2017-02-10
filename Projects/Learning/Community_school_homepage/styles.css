@@ -1,0 +1,132 @@
+html{
+  font-size:10px;
+}
+/*8*/
+body{
+  letter-spacing:2px;
+  word-spacing: 1px;
+  line-height:2em;
+  
+  background-color: rgb(90,170,170);
+  border:none;
+  margin:0;
+}
+
+header{
+  border-top: 4px red solid;
+  border-bottom: 4px red solid;
+  margin-bottom: 2em;
+  line-height:7em;
+}
+
+section{
+  margin-left: 2%;
+  width:49%;
+  float: left;  
+  margin-right: 2%;
+}
+
+aside{
+  width:24%;
+  float: left;
+  margin-right:1%;
+}
+
+
+/*7*/
+h1{
+  font-size: 3.2em;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+h2{
+  font-size: 2.3em;
+}
+
+p{
+  
+}
+
+/*9*/
+section h2+p{
+  text-indent:20px;
+}
+
+/*13*/
+a{
+  color:red;
+}
+
+/*14*/
+a:hover{
+  text-decoration: none;
+}
+
+/*15*/
+a:focus{
+  outline: none;
+}
+
+/*16*/
+a:active{
+  font-size: 1.5em;
+  background-color: yellow;
+}
+
+/*17*/
+a[href*="http"]::after{
+  content:"";
+  display: inline-block;
+  background:url(link_icon.png) no-repeat 0 0;
+  background-size: 16px 16px;
+   
+  width:16px;
+  height:16px;
+
+}
+
+/*21*/
+li{
+  line-height: 1.5;
+  margin-top: inherit;
+  margin-bottom: inherit; 
+  
+  /*22*/
+  list-style-type: square;
+}
+
+nav{
+/*  background-color: #FFF;
+*/  width:17% ;
+  float: left;
+}
+
+nav ul{
+  padding:0;
+}
+nav ul li{
+  background-color: rgb(130,130,110);
+  list-style-type: none;
+  text-align: center;
+  border: 1px solid red;
+  
+  
+  
+  
+}
+nav ul li a{
+  display:inline-block;
+  line-height: 2.5em;
+  text-decoration: none;
+  font-size: 2.5em; 
+  border:1px solid yellow;
+  width: 100%;
+
+  
+}
+
+footer{
+  clear:left;
+  text-align: center;
+}

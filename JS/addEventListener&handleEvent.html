@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<p id="p1">.addEventListener(type, listener);
+	.addEventListener(type, obj);//with 'handleEvent'method</p>
+
+	<script type="text/javascript">
+		function WhatType(element){
+
+			this.name = "This is a special event handler";
+			this.click1 = function(){
+				alert("Click1");
+			}
+			//name MUST be 'handleEvent'!!
+			this.handleEvent=function(event){
+				alert("We are now checking the event type...");
+				switch(event.type){
+					case 'click':
+						alert('This is click event');
+						break;
+					case 'dblclick':
+						alert('This is double click event');
+						break;
+					case 'mousedown':
+						alert("This is mousedown event");
+						break;
+				}
+			};
+
+			/* 'this' refers to WhatType instance which contains 'handleEvent' method.
+				Code below means that register listener on 'element' and when event fires, run 'this' -- WhatType() function.
+			*/
+			//element.addEventListener('click', this, false);	
+			//element.addEventListener('mousedown', this, false);
+			element.addEventListener('dblclick', this, false);
+			
+			//element.removeEventListener('click' this, false);
+			//element.removeEventListener('dbclick' this, false);
+		}
+
+		var go = WhatType(document.getElementById('p1'));
+	</script>
+</body>
+</html>

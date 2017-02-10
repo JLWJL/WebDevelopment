@@ -1,0 +1,77 @@
+Term:
+	1. prototype object: the object from which another object inherits properties and functions.
+	2. prototype property: In dot notation, ".prototype" is a property (or subnamespace). It contains an OBJECT storing properties and methods that will be inherited by objects further down the prototype chain.
+
+
+1. Prototype object:
+
+* The inherited methods and properties only exist in the inheriting object's constructor function, not copied over to the instance. A link is made btwn OBJ instance and its CONSRTRUCTOR, so that all the methods and properties are found in the constructor function by WALKING UP THE CHAIN!!
+
+* There ISN'T officially a way to access the PROTOTYPE OBJECT of an object as the link between the prototype chain is defineded internally for JavaScript. HOWEVER, most browsers have a property "__proto__" which contains the object's prototype object. 
+	var date = new Date();
+	date.__proto__; // --> Object { , 49 more… } 
+
+	var me = new Object();
+	me.__proto__; // --> Object { , 15 more… }
+
+	NOTE: the prototype object displayed by "__proto__" is the object stored in 'prototype' property of the 'parent' object.
+		E.g. me.__proto__; // --> Object { , 15 more… }. This is not the REAL Object, but it is the obj stored in 'prototype' property of the REAL Object. The REAL Object contains more than 15 methods, the rest cannot be inherited.
+
+
+
+2. "prototype" property
+	Methods like "Object.prototype.valueOf()" will be inherited by all instances inherit from Object.
+	Methods like "Object.is()" is defined in Object constructor and can just be used by Object itself.
+
+	Object.prototype; //--> Object { , 15 more… } 
+	means that Object's prototype property is named exactly as "Object" and it contains 15 or more methods
+
+	Number.prototype; // --> Number
+	means that Number's prototype property is named as "Number" and it also contains a number of methods.
+
+	By default, prototype property of an object is EMPTY.
+
+3. "constructor" property
+	Each object has a "constructor" that points to the original constructor function that created the object.
+
+	var o = 22;
+	o.constructor; // return function Number();
+	o.constructor.name // return "Number"
+
+	var p = new o.constructor(24);
+	p; // 24;
+
+4. Object.create(proto[,propertiesObject]): This method belongs to Object itself, it cannot be inherited because it is not in the "prototype" prototype of Object.
+
+	proto: a prototype object for the newly-created obj
+	propertiesObject: The properties that will ONLY belong to the newly-created object.
+
+	function Person(){
+		this.name = "AAA";
+	};
+	var person1 = new Person(); //person1 is created by original constructor
+	var person2 = Object.create(person1);	
+	person2.__proto__; // person1	
+
+	var person3 = Object.create(Person.prototype); 	
+
+	//person3 is created using Person.prototype, 													remember 'prototype' also contains an object. But Person.prototype is currently empty.
+	More important, person3 only has properties that exist in Person.prototype, 
+	which means that person3 CANNOT call 'name' property in Person() constructor
+	//
+
+	person3.__proto__;
+	//*** According to NOTE in 1. this code returns an empty object as Person.prototype is empty//
+
+	Person.prototype === person3.__proto__ // So this returns 'true'
+
+
+5. Modifying "prototype" property (Take "Person" as an example).
+	Remember that initial prototype of an object is empty. So Person.prototype is empty until it is modified.
+	
+	Person.prototype.fullName() = function(){...} adds a function 'fullName' to Person's prototype property.
+	(Rarely) Person.prototyp.status ="Student" adds a property 'status' to Person's prototype property.
+
+	Normal practice:
+		Define static properties within the constructor but define methods using 'prototype'.
+

@@ -1,0 +1,6 @@
+JQuery object vs DOM object
+
+JQuery object is like an array in which each element refers to a DOM object.
+$('input') => [<input>,<input>,...]
+DOM object is obtained from JQuery object by $('input').get(0).
+var ipt1 = $('input').get(0);

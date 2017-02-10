@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>File_Input</title>
+	<style type="text/css">
+		input:first-child {
+			display:block;
+		}
+		
+	</style>
+</head>
+<body>
+	<form onsubmit="return formSub()">
+		<input type="File" id="fileInput" multiple="true" name="File_Input" accept="image/*">
+		//accept="file_extension|audio/*|video/*|image/*|media_type">, multiple separated by comma
+
+		<label for="email">Input your email here:</label>
+		<input type="email" multiple="true" name="email">
+		<br>
+		<button>Submit Form</button>
+	</form>
+	
+	<script>
+	function formSub(){
+		var fileInput = document.querySelector('#fileInput');
+		var file = fileInput.files[0];
+		if(file.type==='image/jpeg'){
+			
+			return true;
+		}
+		else{
+			alert("Only upload image file please.");
+			return false;
+		}
+	}
+	</script>
+</body>
+</html>

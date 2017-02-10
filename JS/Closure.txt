@@ -1,0 +1,158 @@
+Closures are functions that 'remember' the environment in which they are created. The environment including any global or local variables.
+
+/***Example 1:
+
+function multiply(){
+	var mult = 2;
+	return function(x){
+		return x*mult;
+	}
+}
+
+OR 
+
+function multiply(){
+	var mult = 2;
+	var result =function(x){
+		return x*mult;
+	}
+	return result;
+}
+
+The above is the definition of function 'multiply', it will not do anything unitil it is called.
+
+To call this function, just do "multiply();". Calling this function returns another function that is defined within 'multiply', and has access or remember the local variable 'mult' even 'multiply' has been called and hence finished. 
+
+Note that at this time, the inner function is not being calling. To call it, first assign 'multiply' to a variable.
+var x = multiply();
+Now x is that inner function, you still have to call it otherwise nothing happens. 
+'x(3)' will call that inner function and finally return the result 6.
+
+
+
+/***Example 2: Closure with loop
+
+function loopClosure(){
+	var arr = [];
+	for(var i =0;i<3;i++){
+		arr.push(function(){
+			return i*i;
+		});
+		//console.log(arr[i]());
+	}
+	return arr;
+}
+
+The above is also a definition of 'loopClosure' that will do nothing until being called.
+
+Within the function, there is a for loop adding an anonymous function to the array 'arr', and then return this array.
+
+Calling 'loopClosure' will return 'arr' containing 3 functions. However, these functions are not being called, because they are just stored in the array and the array is returned. So you can call these functions through the array's index.
+
+var x = loopClosure(); //Calling 'loopClosure' and get the returned array.
+x[0]();	// Calling each function in the array
+x[1]();
+x[2]();
+
+Now the functions are being called, each time it returns i*i, but now i is 4. So the result will be 9, 9, 9 instead of 0,1,4. Because i is remembered by these functions.
+
+
+
+/***Example 3:
+
+function showHelp(help) {
+  document.getElementById('help').innerHTML = help;
+}
+
+function setupHelp() {
+  var helpText = [
+      {'id': 'email', 'help': 'Your e-mail address'},
+      {'id': 'name', 'help': 'Your full name'},
+      {'id': 'age', 'help': 'Your age (you must be over 16)'}
+    ];
+
+  for (var i = 0; i < helpText.length; i++) {
+    var item = helpText[i];
+    document.getElementById(item.id).onfocus = function() {
+      showHelp(item.help);
+    } 	//Assign anonymous function to onfocus event
+  }
+}
+
+setupHelp();
+
+Calling this function assigns showHelp(item.help) to onfocus event of each HTML element, however, it is not calling the function yet.
+The function will be triggerd when these elements are in focus status, but at that time, 'item.help' has already been help info of 'age'.
+To avoid this situation, simply use 'let', instead of 'var' to declare the global variable.
+
+
+******************** N   O   T   E ******************
+Example 4: Using closure in object
+
+var name = "ryan";
+
+var me = {
+	name: "wjl",
+	getName: function(){
+
+		//var that =this; // uncomment this line will get the expected result
+		return function(){
+			return this.name; // 'this' only refers to 'name' in 'getName'. Here 'this' refers to 'window' where 'name' is 'ryan' 
+		}
+	}
+}
+
+console.log(me.getName()()); //"ryan"
+
+
+Example 5: Using closure in constructor function
+
+var name ="ryan";
+function me(){
+  this.nam="wjl";
+  this.getName=function(){
+    //var that =this;
+    return function(){
+      return this.nam;	//'this' cannot access to 'nam';
+    }
+  }
+}
+
+var w = new me();
+//the same for method specific for this object
+w.getname=function(){
+    var that =this;
+    return function(){
+      return that.nam;
+    }
+  }
+
+alert(w.nam);	// 'wjl'
+alert(w.getName()());	//undefined
+alert(w.getname()());	//undefined
+
+
+Example 6: 
+
+function fun(n,o) {
+  console.log(o)
+  return {
+    fun:function(m){
+      return fun(m,n);
+    }
+  };
+}
+var a = fun(0); //undefined, return an object having inner function 'fun' with "m: ,n:0"
+a.fun(1);  //0. invoke inner 'fun (1,0)' => print 0;
+a.fun(2);  //0	invoke inner 'fun(2,0)' => print 0;
+a.fun(3);  //0	invoke inner 'fun(3,0)' => print 0;
+
+/* according to above, other results as below
+var b = fun(0).fun(1).fun(2).fun(3);//undefined, 0, 1,2 
+
+var c = fun(0).fun(1);  //undefined, 0 =>return an object having inner function 'fun' with 'm: , n:1'
+c.fun(5);  //1	invoke inner 'fun(5,1)'
+
+c.fun(3);  //** 1 (not 2)	invoke inner 'fun(3,1)'
+
+ c.fun(4);  //** 1 (not 3)	invoke inner 'fun(4,1)'

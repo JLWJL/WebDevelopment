@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+	<!-- Method 1 -->
+	<!-- <h1>Method 1:AddEventListener, passing 'this'/'event'</h1>	 -->
+	<script>
+		var h = document.querySelector("h1");
+		
+		//Method 1 anonymouse function passing 'f'(whatever) as 'event' obj
+			//both work the same 
+		// h.addEventListener("mouseover",function(f){//can't pass 'this' here
+		//  	f.target.style.color="red";
+		//  	this.style.color="blue";
+		// 		alert(e);
+		// 		alert(this);
+		// },false); 
+
+		//Method 1.1 call named function that defines 'event' obj as param.
+		// h.addEventListener("mouseover", changeC, false);
+		// function changeC(e){
+		// 	//both work the same
+		// 	e.target.style.color ="red";
+		// 	this.style.color="blue";
+		// 	alert(e);
+		// 	alert(this);
+		 	
+		// }
+	</script>
+
+	<h1>Method 2: calling function by dot notation</h1>	
+	<script type="text/javascript">
+		var h = document.querySelector("h1");
+		h.onclick=function(e){
+			e.target.style.color="red";
+			this.style.color ='blue';
+			alert(e.target.innerText);
+			alert(this); //HTML heading element
+		}
+	</script>
+
+
+
+	<!-- Method 3: inline JS, using 'event' as param -->
+	<!-- <h1 onmouseover="changeC(event)">Method 3</h1>  -->
+	<script>//3
+		function changeC(e){
+			e.target.style.color ="red";
+			//this.style.color="blue";//'this.style' is undefined		
+			alert(e); //return 'object MouseEvent'
+
+		}
+	</script>
+
+	<!-- Method 3.1: inline JS, using 'this' as param -->
+	<!-- <h1 onmouseover="changeC(this)">Method 2</h1>  -->
+	<script>//3.1
+		function changeC(e){
+			//e.target.style.color ="red"; //'e.target' not defined
+			e.style.color="blue";
+			alert(e); //return 'object MouseEvent'
+		}
+	</script>
+
+
+
+
+
+</body>
+</html>

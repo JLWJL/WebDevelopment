@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>innerHTML_innerText_textContent</title>
+</head>
+<body>
+	<div id="d1">
+		<p>div1 is the <strong>first</strong>one</p>
+	</div>
+	<div id="d2">
+		<h5 style="display:none;">div2 is the seconde one</h5>
+	</div>
+	<div id="d3">
+		<a style="display:none;" href="#">div3 is the third one</a>
+	</div>
+
+	<hr>
+	<div id="output1" style="width:50%; border:solid red 2px;"></div>
+	<div id="output2"></div>
+	<div id="output3"></div>	
+
+<script type="text/javascript">
+	
+	alert(document.querySelector('#d1').innerHTML); //<p>div1 is the <strong>first</strong>one</p>
+
+	alert(document.getElementById('d2').textContent);//not aware of style 'display:none': div2 is the seconde one
+	alert(document.getElementById('d3').innerText);	// aware of style 'display:none': ''
+
+	document.querySelector('#d1').innerHTML="<strong>changed</strong>"; // bold 'changed'
+	document.getElementById('d2').textContent="<strong>changed</strong>"; //<strong>changed</strong>
+	document.getElementById('d3').innerText="<span>end</span>"; //end
+
+	// innerText and textContent can avoid XSS attack because they convert HTML tags into pure text instead of tags markup like inner HTML
+</script>
+
+</body>
+</html>

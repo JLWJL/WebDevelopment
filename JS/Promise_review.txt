@@ -1,0 +1,218 @@
+Ref:http://www.111cn.net/wy/js-ajax/91378.htm
+
+
+Syntax:
+	new Promise(	//Executor function
+		function(resolve, reject){
+			resolve(...)	//in condition 1
+			reject(...)		//in condition 2
+		}
+	)
+
+	Executor function is immediately executed during implementation of Promise, passing 'resolve' and 'reject' functions
+
+State: 
+	pending, fulfilled, rejected (fulfilled & rejected also known as "resolved")
+	Once a Promise's state is resolved, it will be impossible to change.
+
+Methods:
+	
+	.then(onFulfilled, onRejected): 
+
+		1.	It returns a new promise with state determined by --
+			
+			If onFulfilled and onRejected returns a Promise REJECTS
+
+				Promise.resolve(10).then(
+					function ok(res){
+						console.log(res);
+						return Promise.reject(20);
+					},
+
+					function fals(err){
+						console.log(err+"a"); //10aa
+					}
+				)
+				.then(
+					null,
+					function(err){
+						console.log(err); //20
+					}
+				)	
+
+			 or throw an error, the returned Promise is in rejected state.
+				Promise.resolve(10).then(
+					function ok(res){
+						console.lo(res); // Error: 'lo' not defined, immediately returns a rejected Promise 
+					},
+
+					function false(err){
+						//...
+					}
+				)
+				.then(
+					null,
+					function(err){
+						console.log(err); // This deals with the error from previous rejeceted promsie AND
+											returns a new FULFILLED promise, see rule 2.
+					}
+				)	
+
+
+			 If onFulfilled and onRejected returns a Promise RESOLVES or ANY OTHER VALUE, the returned Promise is in fulfilled state.
+
+				Promise.reject(20).then(
+					function ok(res){
+						//console.lo(res); // Error: 'lo' not defined, immediately returns a rejected Promise 
+					},
+
+					function false(err){
+						console.log(err); //onRejected returns 'undefined' which is not an error, so it 						then returns a RESOLVED promise	
+					}
+				);
+
+		2. In the chaining 'then', if onFulfilled of one 'then' doesn't return any value, the sequent 'then' cannot use a value from this 'then'
+				Promise.resolve(10).then(
+				  function ok(){
+				    console.log(123);
+				    //return 20; 
+				  },
+
+				  function fals(err){
+				  //...
+				  }
+				).then(
+				    function(val){
+				      console.log(val); //'undefined' as previous 'then' doesn't return any value
+				    }
+				);
+
+
+	.catch(onRejected): => .then(null,function(err){...})
+		Returns a fulfilled promise unless the onRejected throws an error or returns a rejected promise
+
+
+	Promise.resolve(value/Promise/thenable):
+		With ordinary value, it returns a promise resolved with this value;
+		With Promise, it returns the same Promise with whatever its state
+		With 'thenable', it unwraps 'thenable' to ultimate value and return a promise.
+			Promise.resolve(
+				{
+					then: function(res,rej){
+						res(100);
+					}
+				}
+			)
+			.then(
+				function(val){
+					console.log(val); //100
+				}
+			)
+
+
+	Promise.reject(reason):
+		'reason' could be value, thenable or promise, but it just takes whatever as a reason for rejection
+		Promise.reject(
+			//"Oops";
+
+			//{
+			//	then: function(res,rej){
+			//			res("non");
+			//		}
+			//}
+
+			// new Promise(function(res,rej){
+			//         rej(100);
+			// })
+		)
+		.then(
+			null,
+			function(reason){
+				console.log(reason);
+			}
+		)
+
+
+	Promise.all(iterable): e.g Array
+		It will wait until all promises are resolved. If all are fulfilled, return a resolved promise, if any rejected, return a rejected promise with the value of rejected promise.
+
+
+	Promise.race(iterable):
+		It returns a promise as soon as one of promises resolves or rejects
+
+
+Promise Trust:
+
+	1. When you call then(..) on a Promise, even if that Promise was already resolved, the callback you provide to then(..) will ALWAYS BE CALLED ASYNCHRONOUSLY!!
+
+	*****
+	*****
+	*****
+	2. When a Promise is resolved, all then(..) registered callbacks on it will be called, in order, 'IMMEDIATELY' at the next asynchronous opportunity, and nothing that happens INSIDE of one of those callbacks can affect/delay the calling of the other callbacks.
+
+	https://jsfiddle.net/m5rgvesf/
+
+	var p1 = new Promise(...);
+	p1.then(function(){				// Registered first on Job queue as a whole, call JQ1
+	  p1.then(function(){			// Registered to next available opportunity on Job queue, JQ3 	
+	  	console.log("2");			
+	  });
+	  console.log(1);				// Run straightaway on JQ1
+	}); 
+
+	console.log(4); 				//According to rule 1, it is in the 1ST place of event loop
+
+	p1.then(function(){				// Registered second on Job queue as a whole, called JQ2
+		p1.then(function(){
+	  	console.log("5");			// Registered to next available opportunity after JQ3, call JQ4
+	  });
+	  	console.log("3");			// Run straightaway on JQ2
+	});
+
+	Result: 4, 1, 3, 2, 5
+
+
+	3. Errors/Exceptions
+		3.1 Errors/Exceptions during the creation of a Promise
+			This will immediately cause the promise rejected, and invoke the callback for rejection.
+			***
+			BUT, invalid use of Promise API will result an IMMEDIATE exception/error thrown, NOT a REJECTED Promise. E.g. Promise.all(), Promise.race(12), new Promise(null).
+
+
+		3.2 Errors/Exceptions in the registered callback
+
+			function pms(x,y){
+			  
+			  return new Promise(function(resolve, reject){
+			  		if(x>y){
+						resolve("x>y");
+					}else{
+						reject("x<y");
+					}
+			  });
+			  
+			}
+
+			var pms1 = pms(2,3);	//pms1 is rejected
+			pms1.then(
+			  function(result){
+			    console.log("Result: "+result);
+			  },
+			  
+			  function(err){
+			      console.lo(); // ERROR spotted!
+			      				//This error results in that the promise returned by pms1.then() is rejected, so if there is another .then() as below, this error will show there.
+			    console.log("Rejected: ");
+			  }
+			
+			).then(
+				function(){
+					
+				},
+				function(){
+					console.log("new promise rejected"); // This will show.
+				}
+			);
+
+
+	4. Thenable: It was decided that the way to recognize a Promise (or something that behaves like a Promise) would be to define something called a "thenable" as any object or function which has a then(..) method on it. It is assumed that any such value is a Promise-conforming thenable.

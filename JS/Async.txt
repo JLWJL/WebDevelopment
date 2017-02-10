@@ -1,0 +1,189 @@
+Concept:
+
+	Any time you wrap a portion of code into a function and specify that it should be executed in response to some event (timer, mouse click, Ajax response, etc.), you are creating a later chunk of your code, and thus introducing asynchrony to your program.
+
+
+Async console:
+
+	In rare situation, you have to not rely on 'console.log' as behaviour of 'console.*' is not standarded. 
+	So it is suggested to use breakpoints, or serialise the object to a 'string'.
+
+
+Event loop: Each iteration of this loo is called a 'tick'
+
+	It's an event queue that is always iterated. When a condition fulfilled, the responding event is put into the event loop for execution/callback function.
+
+	Note: We mentioned "up until recently" in relation to ES6 changing the nature of where the event loop queue is managed. It's mostly a formal technicality, but ES6 now specifies how the event loop works, which means technically it's within the purview of the JS engine, rather than just the hosting environment. One main reason for this change is the introduction of ES6 Promises, which we'll discuss in Chapter 3, because they require the ability to have direct, fine-grained control over scheduling operations on the event loop queue (see the discussion of setTimeout(..0) in the "Cooperation" section).
+
+
+Parallel Threading:
+	"async" is about the gap between now and later. But "parallel" is about things being able to occur simultaneously.
+
+
+JS's execution:
+	
+	1. Run-to-completion
+		When one function starts running, the entirety of its code will finish before any of the code in other functions can run.
+
+	2. Race Condition
+		Functions run at event ordering level, rather than at the statement/operation ordering level
+
+	3. Concurrency
+		Concurrency is when two or more "processes" are executing simultaneously over the same period.
+		"Process 1" and "Process 2" run concurrently (task-level parallel), but their individual events run sequentially on the event loop queue.
+		The single-threaded event loop is one expression of concurrency (there are certainly others, which we'll come back to later).
+
+		3.1 Noninteracting & Interacting
+		
+			Noninteracting:
+				Two concurrent processes interleave within the same program but they don't neccessarily 'interact' if they are not related.
+
+			Interaction:
+				'MORE COMMONLY', concurrent "processes" will by necessity interact, indirectly through scope and/or the DOM. When such interaction will occur, you need to 'coordinate' these interactions to PREVENT "race conditions"
+
+				E.g 1:
+					///////////////////////
+					var res = [];
+
+					function response(data) {
+					    res.push( data );
+					}
+
+					// ajax(..) is some arbitrary Ajax function given by a library
+					ajax( "http://some.url.1", response );
+					ajax( "http://some.url.2", response );
+					///////////////////////
+
+					===>
+					//////////////////////
+					var res = [];
+
+					function response(data) {
+					    if (data.url == "http://some.url.1") {
+					        res[0] = data;
+					    }
+					    else if (data.url == "http://some.url.2") {
+					        res[1] = data;
+					    }
+					}
+
+					// ajax(..) is some arbitrary Ajax function given by a library
+					ajax( "http://some.url.1", response );
+					ajax( "http://some.url.2", response );
+					//////////////////////
+
+				E.g 2:
+					//////////////////////
+					var a, b;
+
+					function foo(x) {
+					    a = x * 2;
+					    if (a && b) {	//prevent a or b is undefined yet
+					        baz();
+					    }
+					}
+
+					function bar(y) {
+					    b = y * 2;
+					    if (a && b) {
+					        baz();
+					    }
+					}
+
+					function baz() {
+					    console.log( a + b );
+					}
+
+					// ajax(..) is some arbitrary Ajax function given by a library
+					ajax( "http://some.url.1", foo );
+					ajax( "http://some.url.2", bar );
+					//////////////////////
+
+				E.g 3: latch -- only the first one wins
+
+					//////////////////////
+					var a;
+
+					function foo(x) {
+					    if (a == undefined) {	// a==undefined will only allow the first one, whatever 'foo' 							or 'bar', any subsequent is ignored.
+					        a = x * 2;
+					        baz();
+					    }
+					}
+
+					function bar(x) {
+					    if (a == undefined) {
+					        a = x / 2;
+					        baz();
+					    }
+					}
+
+					function baz() {
+					    console.log( a );
+					}
+
+					// ajax(..) is some arbitrary Ajax function given by a library
+					ajax( "http://some.url.1", foo );
+					ajax( "http://some.url.2", bar );
+					//////////////////////
+
+		3.2 Cooperation/Cooperative concurrency: Break the long-running process into steps so that other concurrent processes have chance to go to the event loop queue.
+
+			E.g: 
+				var res = [];
+
+				// `response(..)` receives array of results from the Ajax call
+				function response(data) {
+				    
+				    var chunk = data.splice( 0, 1000 ); // let's just do 1000 at a time
+
+				    // add onto existing `res` array
+				    res = res.concat(
+				        // make a new transformed array with all `chunk` values doubled
+				        chunk.map( function(val){
+				            return val * 2;
+				        } )
+				    );
+
+				    // anything left to process?
+				    if (data.length > 0) {
+				        // async schedule next batch
+				        setTimeout( function(){
+				            response( data );
+				        }, 0 );
+				    }
+				}
+
+				// ajax(..) is some arbitrary Ajax function given by a library
+				ajax( "http://some.url.1", response );
+				ajax( "http://some.url.2", response );
+
+				Note: setTimeout(..0) is not technically inserting an item directly onto the event loop queue. 
+				The timer will insert the event at its NEXT opportunity. For example, two subsequent setTimeout(..0) calls would not be strictly guaranteed to be processed in call order.
+				So it is possible to see various conditions like timer drift where the ordering of such events ISN'T predictable. 
+				Despite how convenient (and usually more performant) it would be, there's not a single direct way (at least yet) across all environments to ensure async event ordering. We cover this topic in more detail in the next section.
+
+	4. Jobs queue: on which 'Promise' is based
+
+		"Job queue" is a queue hanging off the end of every tick in the event loop queue. 
+		Certain async-implied actions that may occur during a tick of the event loop will not cause a whole new event to be added to the event loop queue, but will instead add an item (aka Job) to the end of the current tick's Job queue.
+		It's like you cut in the line to play a new game rather than wait for in a new queue.
+
+		However, a job may also add another jobs into the job queue so that the next event loop tick will be postponed.
+		////////////////////////
+		console.log( "A" );
+
+		setTimeout( function(){
+		    console.log( "B" );
+		}, 0 );
+
+		// theoretical "Job API"
+		schedule( function(){
+		    console.log( "C" );
+
+		    schedule( function(){
+		        console.log( "D" );
+		    } );
+		} );
+		////////////////////////
+		The output is A C D B, because timer add an event to the next event loop tick.

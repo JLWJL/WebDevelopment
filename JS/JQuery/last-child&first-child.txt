@@ -1,0 +1,5 @@
+Syntax:	
+	$(selector: last-child/first-child)
+
+Description:
+	last-child and first-child will go find all MATCHED selectors and see if one of which is the last child of its PARENT. So it may have multiple 'first'/'last' children

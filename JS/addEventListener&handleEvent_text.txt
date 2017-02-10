@@ -1,0 +1,22 @@
+1. Definition:
+
+addEventListener(evtType, listener[, options]);
+options:
+	capture: A Boolean that indicates that events of this type will be dispatched to the registered listener before being dispatched to any EventTarget beneath it in the DOM tree.  
+	
+	once: A Boolean indicating that the listener should be invoked at most once after being added. If it is true, the listener would be removed automatically when it is invoked.
+	
+	passive: A Boolean indicating that the listener will never call preventDefault(). If it does, the user 	agent should ignore it and generate a console warning.
+
+addEventListener(evtType, listener[, useCapture]);
+useCapture:
+
+
+2. 
+addEventListener can take an object as a second argument in which a method called 'handleEvent' is searched and called! No need for binding “this”
+
+
+If the 'listener' is with 'bind()', it cannot be removed later. 
+However, it can be done by using 'handleEvent'
+
+See: ../addEventListener&handleEvent.html

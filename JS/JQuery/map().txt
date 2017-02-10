@@ -1,0 +1,17 @@
+map(array/object, callback(element/value, index/key));
+OR
+array/object.map(callback(element/value, index/key));
+
+apply the function on each of the elements/values in array/object and return the new array/object
+	$.map([0,1,2], function(n){
+	   return n>0?console.log(n+1):null;
+	})
+
+	--------
+	//Obtain a string containing key-value in a HTML form from JSON
+	var json={};
+	$('input,select').map(function(){
+		json[this.name] = this.value; //Edit the json key and value set
+	});
+
+	json=JSON.stringify(json);

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>first-child & last-child demo</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+
+</head>
+<body>
+	
+<ul>
+	<li class="js">1111</li>
+	<li class="js">2222</li>
+	<li>3333</li>
+
+</ul>
+
+<ul>
+		<li>444</li>
+		<li>555</li>
+		<li>666</li>
+</ul>
+
+<script>
+	$(document).ready(function(){
+		$('ul:last-child').html("haha");
+		//find all <ul>, then see if there is a <ul> being the last child of its parent. Here the last <ul> is 456 but it is not the last child of the parent <body> because <script> is instead. Moving <script> up within <head></head> will work. 
+		console.log($('body').children().get(2));
+	})
+	
+</script>
+
+
+</body>
+</html>

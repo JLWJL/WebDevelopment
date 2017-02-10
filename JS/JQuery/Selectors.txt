@@ -1,0 +1,58 @@
+********************
+For my limited understanding of JQuery, using $() to select any element instead of calling them directly 
+********************
+
+
+By tag: $('div'); 
+By class: $('.container.wrap'); // All <div class="container wrap">
+By id: $('#picFrame1'); 
+By attr: $('[ type=text ]');
+
+Selector context:
+	$('element', this): equals to $(this).find('element');
+
+Composition selector:
+	 $('div.container') <div class = "container">
+	 $('input[name = name]'); <input name = "name">
+
+Multiple selector:
+	$('p.big, p.small')	//<p class="big">, <p class="small"> and <p class="big small">
+	HOWEVER, <p class="big small"> will be selected only once.
+
+Decendent selector:
+	$('p.big p.small'): <p class="big"><p class="small"></p></p>
+	$('p[name = p1] span') <p name="p1"><span></span></p>
+
+Child selector: Applied with direct parenet-child relationship, otherwise nothing selected
+	$('p.p1 > span'); //<p class="p1"><span></span></p>
+
+Filter: looks like pseudo class of CSS
+	:first/last-child, :nth-child(n), nth-child(even/odd)
+	$('ul.lang li:first-child')
+
+Form selector:
+	:input, :text, :radio, etc
+
+JQuery selector doesn't return 'undefined' or 'null' if element isn't found, so you don't need to use 'if' to 
+
+
+----------------------
+Find & filter
+	find(): search within all the children elements
+		$('.lang').find('en'); 
+	
+	parent(): search the parent element
+		$('.en').parent()
+		$('.en').parent('.master-lang'); //until find the required parent element
+
+	next() and prev(): within the same level / siblings
+		used as the same as parent
+
+	filter(criteria, function): param optional; return elements match the criteria
+		creteria: selector expression, a jQuery object or one or more elements 
+		function(index): function to run for EACH element in the set
+
+	not(criteria, function): param optional; return elements not match the criteria
+		creteria: selector expression, a jQuery object or one or more elements 
+		function(index): function to run for EACH element in the set
+

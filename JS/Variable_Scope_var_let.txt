@@ -1,0 +1,56 @@
+1. Variables with 'var'
+
+	In a JS function scope, JS engine look up a variable from inner to outer, which means if the same variable is declared both inside and outside a function, the one inside is 'superior'.
+	----------------------------
+	var outer = "outer";
+
+	function foo(){
+	  var outer ="inner outr";
+	  return outer;
+	}
+
+	console.log(foo());
+	----------------------------
+
+
+	JS engine will also hoist/raise all VARIABLE DECLARTION up to the top of the scope, so that using a variable before its declaration is NO PROBLEM, but otherwise 'ReferenceError' is reported.
+	However, initialisation is another thing. If a variable is used before being initialised, it is 'undefined' actually. Thus it's best to declare and initialise all variables at the very beginning of each scope.
+	---------------------
+	function foo(){
+		console.log(variable);
+		var variable = "hoisted";
+	}
+	foo(); //undefined
+	---------------------
+
+	function foo(){
+		console.log(variable);
+	}
+	foo(); //ReferenceError
+	---------------------
+
+2. Variables with 'let'
+	Variables declared by 'let' will also be hoisted up by JS engine, however, it cannot be used b4 being initialised, otherwise ReferenceError.
+
+	--------------------------
+	//let x = 'outer';
+|	function test(inner) {
+|
+Temporal
+|
+|	  if (inner) {
+dead
+|	    let x;
+|	    console.log("Using 'let'");
+ zone
+|	    x= 'inner';
+	    return x;
+	  }
+	  return x; // gets result from line 1 as expected
+	}
+
+	console.log(test(true)); // inner
+	console.log(test(false)); // ReferenceError
+	--------------------------
+
+	'let' also declares variable in a specific area such as 'for(let i = 0;i<n;i--)' so that 'i' will not be available outside 'for loop'

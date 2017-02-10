@@ -1,0 +1,74 @@
+Example: navigation using list
+
+block level elements can set width, height, padding, background and so on.
+inline level elements don't have text-align,height,width and so on.
+
+<li>: block level
+<a>: inline level
+
+
+**SET 1***
+li{
+	display:inline;
+	// no width, height for <li>, the width could be presented as the content
+	//within it, for example, <a> (must set <a> as display:inline-block)
+	
+	/*text-align:center; //doesn't work if <li> is set as 'inline'
+						//and if <a> is 'inline-block' at the same time, it
+						//will set the <a> block centered, instead of the text
+						// in <a>*/
+	/*background-color: blue; //don't do this, as bg color will only display under the text. Declare it in <a>*/
+}
+
+a{
+	display:inline-block;
+	text-align: center;
+	width:20%;	//	width is 20% of <ul>, instead of <li>, as <li> is set as 'inline'
+	/*height: 20px;	//don't do this, height adjust to text size automatically*/
+	line-height:3;	/*control the height of <a>, if it is too small, the bg color will NOT fill the outline/border if there is one
+					if not set, bg color fill out the container*/
+	color:red;
+	background-color:green;	//
+
+}
+
+
+**SET 2***
+li{
+	float:left;  /*<li> is still of block level.*/
+	width: 20%; /*if no 'width' defined, the width will adjust according to the content in it, e.g. <a>aaa</a>, <a>bbbbbbbbb</a>*/
+	text-align:center; /*this will make content of <a> centered in <li>*/
+
+	/*color:red; don't define this if the words are within between <a>*/
+
+	
+}
+
+a{
+
+	color: red; /*must define here if you want to change color of the text within <a>*/
+	font-size:20px;
+
+	/*display:inline-block;	//only when this declared, <a> 'box' will be positioned by "text-align" in <							li>
+							//and the below will make sense;
+	background-color: red;	//without 'inline-block' and 'width', the area of bg color adjusts to the 								content.
+	text-align:center;	//set words in the middle of <a>, without 'inline-block', this doesn't work
+	width:30%;	// 30% of <li> width; doesn't work without 'inline-block'
+
+	For easy layout and color effect, don't set 'inline-block' for <a> when using 'float' for <li>
+	*/
+}
+
+when <li> is 'inline', set <a> as 'inline-block' so that <a> can have effects of width, text center-aligned and so on
+
+when <li> is 'inline-block', normally keep <a> 'inline' as default
+
+
+Floated elements is taken out of the normal flow of page, thus:
+If container only contains 'floated' elements, this container will collapse over the 'floated' elements being unvisibal, 
+unless you put some content and give a background color over there.
+If you want containers background color to expand to cover the 'floated' elements, do 'clear:both' with an empty <div>
+after 'floated' elements WITHIN the container before closing
+
+
+

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<ul class="ul">
+		<li>li 1</li>
+		<li>li 2</li>
+		<li>li 3</li>
+		<li>li 4</li>
+		<li>li 5</li>
+	</ul>
+
+	<script type="text/javascript">
+		var lists = document.querySelectorAll('li');
+		for (var i =0; i<lists.length; i++){
+			(function () {
+				alert(this.innerHTML);
+			}).call(lists[i]); /*bind each 'list' as the scope*/
+			
+			/*'this' refers to 'window'*/
+			// (function(){
+			// 	alert(this.innerHTML);//undefined
+			// 	alert(this===window);//true;
+			// })()
+		}
+
+		function greet(name){
+			alert("I'm "+name);
+		}
+		greet.apply(this, ["Junlong"]);
+
+		lists[0].addEventListener('click',function(){
+			for (var i = 0; i < lists.length; i++) {
+				lists[i].addEventListener('click', name.bind(lists[i],"Ryan","Wang"), false); 
+				//can't pass param for 'name' here as it will invoke the function "lists[i].addEventListener('click', name("Ryan"), false);"
+			}
+		},true);
+
+		function name(name1, name2){
+			alert(this.innerHTML + " " + name1 +" " + name2);
+		}
+
+
+	</script>
+</body>
+</html>

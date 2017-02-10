@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>'this' in handler</title>
+	<style>
+		.code:hover{
+			background-color: rgba(66, 244, 185, 0.3);
+			
+		}
+		.highlight{
+			color:red;
+			font-weight: bold;
+		}
+
+		span.tag::before{
+			content:"<"
+		}
+
+		span.tag::after{
+			content:">"
+		}
+	</style>
+</head>
+<body>
+	<!-- Point 1 -->
+	<h2>Point 1</h2>
+	<p>If an event attribute (e.g., onclick) is specified on an element in the HTML source,<span class="highlight"> this</span> refers to the element. Click the below</p>
+						<!-- 'this' in 'onclick' refers to 'p' -->
+	<code class="code" onclick="var nb = 3;alert(this+nb*2);">
+		<span><</span>
+		<span>p onclick="var nb =3; alert("</span>
+		<span class ="highlight">this</span>
+		<span>+nb*2);></span>
+		<span class="highlight"> click me</span>
+		<span><</span>
+		<span>/p></span>
+	</code>
+	
+	<!-- Point 2 -->
+	<h2>Point 2</h2>
+	<p>Value of <span class="highlight">this</span> inside a function called by the code in the attribute value refers to <span class="highlight">'window'</span></p>
+
+	<code class="code" onclick="clickme(this)">
+		<span><</span>
+		<span>p onclick="inJS()"</span>
+		<span class="highlight"> click me</span>
+		<span><</span>
+		<span>/p></span><br>
+		<span class="tag">script</span><br>
+		<span>function inJS(){alert(this);}</span> <span class="highlight">//window</span><br>
+		<span class="tag">/script</span>
+	</code>	
+
+
+	<!-- Point 3 -->
+	<h2>Point 3</h2>
+	<p>When attaching a handler function to an element using addEventListener(), the value of this inside the handler is a reference to the <span class="highlight">element</span>. </p>
+	<button id="pnt3_1">click 1</button><br>
+	<code class="code">
+		<span>function pnt3(element){</span><br>
+		<span>this.name = "Ryan";</span><br>
+		<span>this.click1 = function(){alert("this.name");}</span><br>
+		<span>this.click2 = function(){alert("this.name");}</span><br>
+		<span></span><br>
+		<span>element.addEventListener('click', this.click1, false);<span class="highlight">//'this' refers to 'element'</span></span><br>
+		<span>element.addEventListener('click', this.click2<span class="highlight">.bind(this);</span>, false);</span><br><br>
+		<span>element.removeEventListener('click', this.click2,false);<span class="highlight">//can't be removed</span></span><br>
+		<span>element.removeEventListener('click', this.click1,false);</span><br>
+		<span>}</span><br>
+		<span></span><br>
+		<span>pnt3(document.getElementById('pnt3_1'));</span><br>
+
+		<span></span><br>
+	</code>
+
+	<p>But using 'bind()' here has a problem that we CAN'T remove the listener</p>
+	
+	<code class="code">
+		var Something = function(element) {<br>
+	// |this| is a newly created object<br><br>
+  <span class="highlight">this.handleEvent = function(event) {<br>
+  this.name = 'Something Good';<br>
+    console.log(this.name); // 'Something Good', as this is bound to newly created object<br>
+    switch(event.type) {<br>
+      case 'click':<br>
+        // some code here...<br>
+        break;<br>
+      case 'dblclick':<br>
+        // some code here...<br>
+        break;<br>
+    }<br></span><br>
+  };<br>
+
+  // Note that the listeners in this case are |this|, not this.handleEvent<br>
+  element.addEventListener('click', this, false);<br>
+  element.addEventListener('dblclick', this, false);<br>
+
+  // You can properly remove the listeners<br>
+  element.removeEventListener('click', this, false);<br>
+  element.removeEventListener('dblclick', this, false);<br>
+}<br>
+var s = new Something(document.body);<br>
+	</code>
+
+
+	<!-- Function of Point 2 -->
+	<script type="text/javascript">
+	// function -- click me()
+	function clickme(){
+		alert(this); //this refers to 'window'
+	}
+
+	var p = document.getElementById('p1');
+	</script>
+
+
+	<!-- Function of Point 3 -->
+	<script>
+		function pnt3(element){
+			this.name ="Ryan";
+			this.click1=function(){alert(this.name);}
+			this.click2=function(){alert(this.name);}
+
+			element.addEventListener('click', this.click1,false);
+			element.addEventListener('click', this.click2.bind(this),false);
+			element.removeEventListener('click', this.click2,false);
+			element.removeEventListener('click', this.click1,false);
+		}
+		pnt3(document.getElementById('pnt3_1'));
+
+	</script>
+	
+</body>
+</html>

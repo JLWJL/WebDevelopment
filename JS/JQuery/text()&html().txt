@@ -1,0 +1,6 @@
+text(): 
+	When returning or setting value, it returns the TEXT content of ALL matched elements.
+
+html():
+	When returning content, it only returns the content of FIRST matched element.
+	When setting content, it sets the content to ALL matched elements.

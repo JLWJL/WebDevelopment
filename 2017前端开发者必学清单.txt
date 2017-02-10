@@ -1,0 +1,103 @@
+英文：Artem Sapegin   译文：众成翻译
+
+zcfy.cc/article/what-to-learn-in-2017-if-you-re-a-frontend-developer-2210.html
+
+
+学习如何编写可读的代码
+
+我们大多数的工作不是写新代码，而是维护既有的代码。这也就意味着你读代码的时间要远多于写码的时间，因而你需要为你下一位维护代码的同事来优化代码，而非为解释器来优化。
+
+我推荐大家阅读这几本很棒的书，由薄到厚，按下面顺序来阅读：
+
+《编写可读性代码的艺术》 作者是Dustin Boswell
+
+《代码整洁之道》 作者是 Robert C. Martin
+
+《代码大全》 作者是 Steve McConnell
+
+
+
+深入学习JavaScript
+
+几乎每周都有一款优于老框架的新JavaScript框架出现，这使我们很容易把大部分时间花在学习新框架而非语言本身上。如果你正在使用一个框架，却不知道它是如何运行的，一定要先停下来并开始学习语言本身，直到你理解了这个框架如何运行为止。
+
+你最好是从Kyle Simpson的 《你不知道的 JavaScript》系列书籍开始，也可以在线免费阅读
+
+Eric Elliott为你需要在2017学习的JavaScript主题开出了一份大清单.
+
+Henrique Alves 也提供了一个关于在使用React（实际上是任何框架）前需要具备的知识列表
+
+《JavaScript Developers: Watch Your Language》 作者Mike Pennisi ，可以了解TC-39添加ECMAScript新特性的进程。
+
+
+
+
+学习函数式编程
+
+一直以来我们都希望JavaScript拥有类。现在我们终于拥有了，但我们却一点也不想使用，函数才是我们最想用的！甚至我们都用函数来写HTML(JSX)。
+
+《Functional-Light JavaScript》,作者 Kyle Simpson.
+
+Frisby教授的电子书 《Mostly adequate guide to functional programming》 和 免费课程.
+
+
+
+
+学习关于设计的基础知识
+
+作为前端开发人员，我们在团队中比任何人都要接近用户，甚至比设计师还要接近。当设计师不得不核对你页面上的每个像素时，说明你犯错啦。
+
+《Design for Hackers》: 书和免费课程.
+
+《Design for Non-Designers》,Tracy Osborn.
+
+《Design of Web Applications》,Nathan Barry.
+
+《On Web Typography》,Jason Santa Maria.
+
+《The Inmates Are Running the Asylum: Why High Tech Products Drive Us Crazy and How to Restore the Sanity》,Alan Cooper.
+
+《A few articles on animation in UI》: 如何使用动画去提升用户体验, 界面过渡效果.
+
+
+
+学习传统的计算机科学知识
+
+前端开发不再是做简单的下拉菜单动画。它的复杂度达到了前所未有的程度，由于前端解决的问题越来越复杂，不可避免地出现了让人深恶痛绝的“JavaScript疲劳症”
+
+因此，我们需要去学习非前端开发人员在过去几十年积累的计算机科学知识。同时，也希望听到你们的建议。
+
+
+
+
+学习与他人合作
+
+我们中很多人都是因为更想与计算机而非与人交流而选择编程，但不幸的这样行不通。
+我们平时很少是独立工作的: 大多时间都要同其他开发人员、设计师、产品经理，甚至有时同用户交流。 虽然很难，但是如果你真的想了解自己在做什么并且为什么这么做，这就很重要了，毕竟这才是我们所做工作的价值所在。
+
+
+《软技能: 程序员生存手册》,John Sonmez.
+
+《程序员的职业素养》,Robert C. Martin.
+
+《从无到有》,Jim Camp.
+
+
+
+
+学习为人写作
+
+我们日常与同事和其他人的大部分交流都是文字性的：任务描述和评论、代码注释、Git提交信息、聊天信息、邮件、tweets博客文章等等。
+想象一下人们需要花费多少时间来阅读并理解这些内容。如果你能够通过写的更加清晰简明来减少这些时间耗费，工作氛围肯定会变得更棒。
+
+《论优良写作》,William Zinsser.
+
+《风格的要素》,William Strunk 和 E. B. White.
+
+《Orwell的写作法则》.
+
+在俄罗斯，有非常棒的 Glavred课程.
+
+
+
+

@@ -1,0 +1,11 @@
+Website address - URL: Uniform Resource Locator
+
+Top-Level Domain-TLD:
+	www.google.com: 'com' is TLD that describes the type of website
+
+Registering Domain:
+1. Hosting company: Most provide free domain registration. But may pay extra money for cancelling hosting contract and move the domain.
+
+2. Registra: May also provide hosting service and easy to transfer domain to different hosting company.
+
+3. WHOIS guard: protect your privacy when your domain is using WHOIS on your domain.

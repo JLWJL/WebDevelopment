@@ -1,0 +1,50 @@
+1.Each scope binds a different value of 'this' depending on how function is invoked.
+So in a nested function, the 'this' in different layer has different bound value, BE CAREFUL!
+
+var me ={};
+me.say = function(){
+	alert(this); //me
+	function(){
+		this.name;//window
+	}
+}
+
+2. Change scope of 'this' by 'bind()','call()' and 'apply()'
+	
+	2.1 .call() & .apply()
+		Syntax:
+			func.call(scope, arg1, arg2, ...);
+			func.apply(scope, [arg1,arg2, ...]);
+
+		Note:
+			.call() and .apply() invoke the function immediately		
+
+		Example:
+			var lists = document.querySelectorAll('li');
+			for (var i =0; i<lists.length; i++){
+				(function () {
+					alert(this.innerHTML);
+				}).call(lists[i]); //binds the <li> element as scope of 'this'
+			}
+
+			function greet(name){
+			alert("I'm "+name);
+			}
+			greet.apply(this, ["Junlong"]); //invoke the function via .apply()
+		
+	2.2 .bind()
+		Syntax:
+			func.bind(scope, arg1, arg2);
+		
+		Note: .bind() doesn't invoke the function, just binds the value of 'this'
+
+		Example:
+			for (var i = 0; i < lists.length; i++) {
+				
+				lists[i].addEventListener('click', name.bind(lists[i],"Ryan","Wang"), false); 
+				
+				//can't pass param for 'name' here as it will invoke the function "lists[i].addEventListener('click', name("Ryan"), false);"
+			}
+			function name(name1, name2){
+				alert(this.innerHTML + " " + name1 +" " + name2);
+			}

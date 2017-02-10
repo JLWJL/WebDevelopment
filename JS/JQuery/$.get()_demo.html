@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+	<title>$.get()_demo</title>
+</head>
+<body>
+	<label for="firstname">Type your first name to get last name:<input type="text" name="firstname"></label>
+	<button>Done</button>
+	<br>
+	<label for="lastname">All last names from database<textarea type="text" name="lastname" cols="60" rows="5"></textarea></label>
+
+	<script>
+		// $('button').click(function(){
+		// 	$.get('lastnames.json',
+		// 		function(data){
+		// 		//$('textarea').text(data.lastname);
+		// 		alert(data[0].lastname);
+		// 	},"json");
+		// });
+
+
+		$('button').click(function(){
+			$.ajax({url:"lastnames.txt",
+					success:function(data){alert(data);},
+					dataType:"text"
+			});
+		});
+	</script>
+</body>
+</html>

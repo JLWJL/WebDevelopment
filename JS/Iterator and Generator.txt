@@ -1,0 +1,95 @@
+In JS, ITERATOR is an OBJ providing a 'next' method which returns the next ITEM in a collection.
+
+/*************************************/
+function makeIterator(array){
+	var index = 0;
+
+	return {	// {}returns an anonymous object that contains a 'next' method, so that 'next' can be accessed by using simply dot notation.
+
+		next: function(){
+			return index < array.lengt?	
+			{value:array[index++], done: false }:{done: true};	//{} returns an anonymous object that contains 2 properties: value and done
+		}
+	}
+}
+
+var Itrt = makeIterator([12,23,34,45,56]);
+console.log(Itrt.next().value)	//12
+console.log(Itrt.next().value)	//23
+console.log(Itrt.next().value)	//34
+console.log(Itrt.next().value)	//45
+console.log(Itrt.next().value)	//56
+
+console.log(itrt.next); // return the function definition
+console.log(itrt.next()); // return the object {value: , done:}
+
+/*************************************/
+
+
+
+Generator: 1. has * with 'function' 2. contains at least 1 'yield' expression.
+
+"Yield" will pause the execution until 'next()' is called again. So in the example, the code below 'yield' will remain paused.
+
+[rv] = yield [expression]
+Normally, yield returns the value of expression afterwards. But when 'next()' gets a value passed, 'yield' will return this value and resume the generator
+
+/************************************/
+
+function* fibonacci(){
+  var fn1 = 0;
+  var fn2 = 1;
+  var index = 0;
+  while (index<8){  
+    var current = fn1;
+    fn1 = fn2;
+    fn2 = current + fn1;
+    index++;
+    var reset = yield current;
+      console.log("yield: "+current);	//At the last run, this is not executed.!!!!!!!!!!!!!!!
+//     if (reset){
+//         fn1 = 0;
+//         fn2 = 1;
+//     }
+  }
+}
+
+var fb = fibonacci();
+
+console.log(fb.next());
+console.log(fb.next());
+console.log(fb.next());
+console.log(fb.next());
+console.log(fb.next());
+
+/************************************/
+
+
+
+User-defined iterable: Some objects are iterable like 'Array' and 'Map', but some are not.
+To make an object iterable, it must implement 'Symbol.iterator' method.
+/************************************/
+  //Define a normal object
+  var arr ={
+  name:"ryan",
+  id:1,
+  age:24,
+  grade:"A"
+};
+
+
+//Make it iterable: 1.[Symbol.iterator] 2. Use 'yield' before the properties that you want to be iterable.
+If remove 'yield' before 'name', it won't be print out during the iteration.
+
+arr[Symbol.iterator] = function*(){
+  yield "name is "+this.name;
+  yield this.id;
+  yield this.age;
+  yield this.grade;
+}
+
+for (let v of arr){
+  console.log(v);
+}
+
+/************************************/

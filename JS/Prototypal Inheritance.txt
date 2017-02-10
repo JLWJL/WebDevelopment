@@ -1,0 +1,69 @@
+The base class: Person
+//Define properties 
+function Person(name){
+	this.name = name;
+
+}
+
+//Define methods in prototype chain of Person
+Person.prototype.greeting=function(){
+	console.log("Hi I'm "+this.name);
+};
+
+Person.prototype.duplicate(){ //implement this method when needed
+	//return new Person(this.name);	// ** Not good enough because it always return instance created by Person **
+
+	return new this.constructor(this.name);
+}
+
+//Child class
+function Student(name,id){
+	Person.call(this, name, age, sex); 
+	****'this' refers to the current/calling object Student****
+	this.id = id;
+}
+
+//Inherit the method
+Student.prototype = Object.create(Person.prototype);
+****"Student.prototype" is still EMPTY, but "Student.prototype.__proto__" is "Person.prototype", so it by now inherits 'greeting' method, as well as the constructor Person, which means that calling 'Student.prototype.constructor' returns 'Person'
+****
+
+**** Set Student's constructor as its own constructor ****
+	Student.prototype.constructor = Student;
+
+//Define Student's own 'greeting' method
+Student.prototype.greeting=function(){
+	//code...
+}
+
+
+
+null
+^
+|
+|Object.prototype.__proto__
+
+Object.prototype: 
+^
+|
+|Person.prototype.__proto__
+
+Person.prototype: Person()-constructor, greeting(),eating()
+^
+|
+|Student.prototype.__proto__
+
+Student.prototype: Student()/Person()-constructor, grading()
+^
+|
+|student1.__proto__
+
+student1 (no prototype property)
+^
+|
+|student2.__proto__
+
+student2 (no prototype property)
+
+
+

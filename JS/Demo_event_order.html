@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Event Order</title>
+	<style type="text/css">
+		html{
+			font-size: 10px;	
+		}
+
+		body{
+			font-size: 3rem;
+		}
+
+		#d1{
+			background-color:pink;
+			width:100rem;			
+			height: 100rem;
+		}
+
+		#d2{
+			background: green;
+			width: 70rem;
+			height: 70rem;
+		}
+
+		#d3{
+			background: blue;
+			width: 50rem;
+			height: 50rem;
+		}
+
+		#d4{
+			background: yellow;
+			width: 30rem;
+			height: 30rem;
+		}
+
+
+	</style>
+
+</head>
+
+<body>
+	<div id="d1">
+		<strong>DIV 1</strong>
+		<div id="d2">
+			<strong>DIV 2</strong>
+			<div id="d3">
+				<strong>DIV 3</strong>
+				<div id="d4">
+					<strong>DIV 4</strong>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		document.querySelector('#d1').addEventListener('click', click1, false);
+		document.querySelector('#d2').addEventListener('click', click1, false);
+		document.querySelector('#d3').addEventListener('click', click2, true);
+		document.querySelector('#d4').addEventListener('click', click2, false);
+
+		function click1(e) {
+			alert("click1 fired "+e.target.innerHTML);//click d3 only returns the same content twice as d3 is the element firing the event
+			//alert("click1 fired "+e.currentTarget.innerHTML);//click d3 returns different content as currentTarget is changing when traversing the DOM
+			//e.stopPropagation();
+		}
+		
+		function click2(e) {
+			alert("click2 fired");
+			//e.stopPropagation();
+		}
+
+		function click3() {
+			alert("click3 fired");
+		}
+
+		function click4() {
+			alert("click4 fired");
+		}		
+	</script>
+</body>
+</html>
