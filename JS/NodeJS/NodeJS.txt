@@ -1,0 +1,28 @@
+CommonJS Regulation:
+    CommonJS is a regulation stating that each .js file is a module, the same variable name could be used in each 'module'  
+
+    Expose a variable from a module, use 'module.exports = <variable>. Variable could be of any type
+
+    Receive a variable from module, use var ref = require('moduleName') 
+
+    'exports' or 'module.exports' are actually an empty object. It can be used like:
+        1. module.exports.foo = function (){...};
+        2. module.exports = {
+                foo: function(){},
+                bar: function(){}
+        } 
+        
+        3. exports.foo = function(){...};
+
+相对路径：
+    Win32: '.\\dir\\dir...'
+绝对路径：
+    Win32: 'G:\\dir\\dir...'
+
+Global obj 'global'
+    This is the global namespace object, which can be accessible anywhere. 
+    Like 'window' in a browser
+    Some built-in JS objects are also accessible
+
+process:
+    Object that is a global providing information about, and control over, the current Node.js process. It's always available to NodeJs app without using require();
