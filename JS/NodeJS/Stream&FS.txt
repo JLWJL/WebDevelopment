@@ -1,0 +1,30 @@
+//Stream: an abstract interface for working with streaming data.
+
+    Type: 4 types of stream are presented by a class respectively
+        - Writable:
+            Class stream.Writable    
+        - Readable:
+            Class stream.Readable
+        - Duplex:
+            Class stream.Duplex
+        - Transform: 
+            Class stream.Transform
+
+
+
+//File System:
+    Classes:
+        - fs.ReadStream
+            Comes from stream.Readable
+
+            (require('fs').ReadStream.prototype instanceof require('stream').Readable); //true
+
+
+        - fs.WriteStream
+            Comes from stream.Writable
+
+            (require('fs').WriteStream.prototype instanceof require('stream').Writable); //true
+
+            
+        - fs.Stats
+        - fs.FSWatcher
