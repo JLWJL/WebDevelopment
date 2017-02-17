@@ -43,3 +43,6 @@ ws.on('finish',function(){console.log("finished")});
 
 /****** Pipe ******/
 _readStream.pipe(ws);
+console.log("Pipe async?");
+_readStream.on('end',function(){console.log("Pipe finishes")});
+
