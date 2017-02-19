@@ -27,11 +27,16 @@ console.log(itrt.next()); // return the object {value: , done:}
 
 
 
-Generator: 1. has * with 'function' 2. contains at least 1 'yield' expression.
+Generator: 
 
-"Yield" will pause the execution until 'next()' is called again. So in the example, the code below 'yield' will remain paused.
+-Syntax:
+  [rv] = yield [expression]
 
-[rv] = yield [expression]
+"yield" is used to pause the execution until generator.next() is called again.
+"yield" also returns an IteratorResult object with two properties, value and done, {value: v, done:false}, in which 'value' is the value produced by 'yield' keyword, 'done' indicates whethere the last value of generator is yieled.
+
+
+  [rv] returns the value passed to generator's next() method and RESUME its execution
 Normally, yield returns the value of expression afterwards. But when 'next()' gets a value passed, 'yield' will return this value and resume the generator
 
 /************************************/

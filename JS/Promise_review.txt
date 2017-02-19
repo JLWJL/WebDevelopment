@@ -111,15 +111,16 @@ Methods:
 
 
 	Promise.reject(reason):
-		'reason' could be value, thenable or promise, but it just takes whatever as a reason for rejection
+		'reason' could be value, thenable or promise, but it just takes whatever as a reason for rejection, which means it's not unwrapping the reason if it is an object, thenable or anything that is just not a direct value
+		
 		Promise.reject(
 			//"Oops";
 
-			//{
-			//	then: function(res,rej){
-			//			res("non");
-			//		}
-			//}
+			{
+				then: function(res,rej){
+						res("non");
+					}
+			}
 
 			// new Promise(function(res,rej){
 			//         rej(100);
@@ -128,7 +129,7 @@ Methods:
 		.then(
 			null,
 			function(reason){
-				console.log(reason);
+				console.log(reason); // Object{then:function(res,rej){res("non")}}
 			}
 		)
 
