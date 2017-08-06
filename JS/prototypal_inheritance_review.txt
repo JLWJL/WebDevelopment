@@ -1,0 +1,64 @@
+//Base 
+function Foo(){
+  this.bar=function(){
+    console.log("bar of constructor")
+  }
+}
+
+//This will destroy the original 'prototype' property
+//Use Foo.prototype.xx = yy
+Foo.prototype.barr = function(){
+    console.log("Of prototype")
+  }
+
+
+var foo = new Foo();
+console.log(foo.constructor);//function Object(){...}
+
+
+//About constructor
+console.log("//About constructor");
+console.log("foo's constructor is Foo", foo.constructor === Foo); //function Foo(){}
+console.log("Foo.constructor is Function", Foo.constructor === Function); // function Function(){}
+console.log("\n");
+
+
+//About __proto__
+console.log("//About __proto__");
+console.log("foo.__proto__ is Foo.prototype ",foo.__proto__ === Foo.prototype); //true
+console.log("Foo.__proto__ is Function.prototype", Foo.__proto__=== Function.prototype); //true
+console.log("Function.__proto__ is Function.prototype", Function.__proto__===Function.prototype);//true
+console.log("Function.prototype.__proto__ is Object.prototype", Function.prototype.__proto__===Object.prototype ); //true
+console.log("Object.prototype.__proto__ is ", Object.prototype.__proto__);
+console.log("\n");
+
+
+//About prototype property
+console.log("//About prototype property");
+console.log("Foo.prototype.__proto__ is Object.prototype",Foo.prototype.__proto__=== Object.prototype); //true
+console.log("Object's prototype property is undefined by default",foo.prototype); //undefined
+
+
+//About inheritance
+//Derived
+function SmallFoo(){
+  Foo.call(this)
+}
+
+SmallFoo.prototype = Object.create(Foo.prototype);
+// console.log(SmallFoo.prototype === Foo.prototype)
+
+SmallFoo.prototype.small=function(){}
+
+var smlFoo = new SmallFoo();
+smlFoo.barr()
+console.log("SmallFoo's constructor is Function",SmallFoo.constructor);
+console.log("smlFoo object's constructor is Foo by inheritance",smlFoo.constructor===Foo);
+console.log("Small.prototype.constructor = SmallFoo");
+SmallFoo.prototype.constructor = SmallFoo;
+console.log("Now smlFoo's constructor is SmallFoo ", smlFoo.constructor===SmallFoo);
+
+
+
+
+// console.log("SmallFoo's prototype is "+SmallFoo.prototype)

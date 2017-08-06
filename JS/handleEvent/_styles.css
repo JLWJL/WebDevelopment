@@ -16,7 +16,9 @@ body, form, ul, li, p, h1, h2, h3, h4, h5
 	padding: 0;
 }
 body { background-color: #606061; color: #ffffff; }
+
 img { border: none; }
+
 p
 {
 	font-size: 1em;
