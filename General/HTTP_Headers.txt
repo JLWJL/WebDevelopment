@@ -1,0 +1,108 @@
+Groups by contexts:
+
+  -General header: Headers applying to both requests and responses but with no relation to the data eventually transmitted in the body.
+  	* Cache-Control	* Connection * Access-Control-Expose-Headers * Content-Type
+
+  -Request header: Headers containing more information about the resource to be fetched or about the client itself.
+  	* Cookie
+  
+  -Response header: Headers with additional information about the response, like its location or about the server itself (name and version etc.).
+  	* Set-Cookie
+  -Entity header: Headers containing more information about the body of the entity, like its content length or its MIME-type.
+
+
+Groups by functions:
+	
+	1. Caching:
+		1.1 Cache-Control:
+			1.1.1 Request directives:
+				Cache-Control: max-age=<seconds> (relative to the time of the request)
+				Cache-Control: max-stale[=<seconds>]
+				Cache-Control: min-fresh=<seconds>
+				Cache-Control: no-cache 
+				Cache-Control: no-store
+				Cache-Control: no-transform
+				Cache-Control: only-if-cached
+
+			1.1.2 Response directives:
+				Cache-Control: must-revalidate
+				Cache-Control: no-cache
+				Cache-Control: no-store
+				Cache-Control: no-transform
+				Cache-Control: public
+				Cache-Control: private
+				Cache-Control: proxy-revalidate
+				Cache-Control: max-age=<seconds>
+				Cache-Control: s-maxage=<seconds>
+
+		1.2 Expires: http-date (Wed, 21 Oct 2015 07:28:00 GMT)
+		Will be ignored when Cache-Control: max-age or x-max-age exists
+
+	2. Connection management
+		2.1 Connection: 
+			
+			2.1.1 keep-alive:
+			
+			2.1.2 close: either the client or the server would like to close the connection
+
+	3. Content negotiation
+		3.1 Accept: which content types (MIME types) the client can understand
+				3.1.1 MIME typs: <MIME_type>/<MIME_subtype>
+					text/html, application/xhtml+xml, application/xml, image/* ...
+
+		3.2 Accept-Charset: usually don't set this
+
+		3.3 Accept-Encoding: which content encoding, usually a compression algorithm, the client can understand. 
+			gzip
+			compress
+			deflate
+			br
+			identity
+			*: no preference
+
+		3.4 Accept-Language: en, en-US, en-GB, *
+
+	4. Cookies
+		4.1 Cookie: contains stored HTTP cookies previously sent by the server with the Set-Cookie header
+			4.1.1 Syntax: 
+				Cookie: <cookie-list>
+				Cookie: name=value
+				Cookie: name=value; name2=value2; name3=value3
+
+		4.2 Set-Cookie: send cookies from the server to the user agent.
+
+	5. CORS - Cross-origin resource sharing
+		5.1 Access-Control-Allow-Origin: URI or *
+		5.2 Access-Control-Allow-Credentials: 
+			Whether the response to the request can be exposed to the page.
+			Set to 'true' if needed, otherwise, omit this header
+		5.3 Access-Control-Allow-Headers:
+			In a response to a preflight request, it indicates which HTTP headers will be available
+		5.4 Access-Control-Allow-Methods
+		5.5 Access-Control-Expose-Headers: Response header indicates which headers can be exposed as part of the response by listing their names.
+		5.6 Access-Control-Request-Headers: In preflight request, let the server know which method will be used when the actual request is made.
+		5.7 Access-Control-Request-Method: As above
+		5.8 Origin: Request header indicates where a fetch originates from. Only the server name without path info
+
+	6. Message body information
+		6.1 Content-Type: (req & res) Tells content type of data/returned content
+
+	7. Request context
+
+		7.1 From
+		    Contains an Internet email address for a human user who controls the requesting user agent.
+		7.2 Host
+		    Specifies the domain name of the server (for virtual hosting), and (optionally) the TCP port number on which the server is listening.
+		7.3 Referer
+		    The address of the previous web page from which a link to the currently requested page was followed.
+		7.4 Referrer-Policy
+		    Governs which referrer information sent in the Referer header should be included with requests made.
+		7.5 User-Agent
+		    Contains a characteristic string that allows the network protocol peers to identify the application type, operating system, software vendor or software version of the requesting software user agent. See also the Firefox user agent string reference. 
+	
+	8. Response context
+
+		8.1 Allow
+		    Lists the set of HTTP request methods support by a resource.
+		8.2 Server
+		    Contains information about the software used by the origin server to handle the request. 
